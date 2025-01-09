@@ -2,7 +2,7 @@
 
 A Flutter package that provides Bootstrap-like responsive components and utilities for building beautiful and responsive Flutter applications.
 
-This is my first package, so it's not perfect. I'm open to suggestions and improvements.
+This is my first package, so it's not perfect and i hope its not so bad. I'm open to suggestions and improvements.
 
 > **Disclaimer**: This package is not affiliated with or endorsed by the official Bootstrap framework or Twitter, Inc.
 
@@ -32,7 +32,7 @@ Add this to your package's pubspec.yaml file:
 
 ```yaml
 dependencies:
-  flutter_bootstrap: ^0.1.1
+  bootstrap_flutter: ^0.0.1
 ```
 
 ## Usage

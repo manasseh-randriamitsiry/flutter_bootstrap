@@ -1,7 +1,7 @@
 name: bootstrap_flutter
-description: "A Flutter package that provides Bootstrap-like responsive components and utilities"
+description: A Flutter package that provides Bootstrap-like responsive components and utilities
 version: 0.0.1
-homepage: https://github.com/manasseh-randriamitsiry/flutter_bootstrap
+homepage: https://github.com/manassehrandriamitsiry/flutter_bootstrap
 
 environment:
   sdk: ^3.6.0
