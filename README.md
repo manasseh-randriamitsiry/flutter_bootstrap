@@ -49,6 +49,7 @@ BootstrapRow(
         ),
     ],s
 )
+```
 
 ### Buttons
 
@@ -105,6 +106,7 @@ BootstrapCard(
     ],
   ),
 )
+```
 
 ### Alerts
 
