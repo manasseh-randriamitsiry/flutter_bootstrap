@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bootstrap/bootstrap.dart';
+import 'package:bootstrap_flutter/bootstrap.dart';
 
 void main() {
   group('BootstrapButton Tests', () {
