@@ -2,6 +2,8 @@
 
 A Flutter package that provides Bootstrap-like responsive components and utilities for building beautiful and responsive Flutter applications.
 
+This is my first package, so it's not perfect. I'm open to suggestions and improvements.
+
 > **Disclaimer**: This package is not affiliated with or endorsed by the official Bootstrap framework or Twitter, Inc.
 
 ## Author
@@ -15,7 +17,8 @@ manassehrandriamitsiry@gmail.com 🇲🇬
   - Input fields with different sizes and states
   - Select/Dropdown component
   - Checkbox and Radio buttons
-  - Form validation
+  - Form validation with built-in validators
+  - Form state management
 - 🎴 Cards with header and footer
 - 🚨 Alert components with different styles
 - 🧭 Navigation bar
@@ -29,10 +32,54 @@ Add this to your package's pubspec.yaml file:
 
 ```yaml
 dependencies:
-  flutter_bootstrap: ^0.1.0
+  flutter_bootstrap: ^0.1.1
 ```
 
 ## Usage
+
+### Form Validation
+
+Create forms with built-in validation:
+
+```dart
+final formKey = GlobalKey<FormState>();
+final formController = BootstrapFormController();
+
+BootstrapForm(
+  formKey: formKey,
+  formController: formController,
+  children: [
+    BootstrapInput(
+      name: 'email',
+      label: 'Email',
+      validator: FormValidator.email,
+      formController: formController,
+    ),
+    BootstrapInput(
+      name: 'password',
+      label: 'Password',
+      validator: (value) {
+        if (value == null || value.length < 6) {
+          return 'Password must be at least 6 characters';
+        }
+        return null;
+      },
+      formController: formController,
+    ),
+    BootstrapButton(
+      text: 'Submit',
+      variant: BootstrapButtonVariant.primary,
+      onPressed: () {
+        if (formKey.currentState!.validate()) {
+          // Form is valid, handle submission
+          final data = formController.values;
+          print(data); // {email: user@example.com, password: ****}
+        }
+      },
+    ),
+  ],
+)
+```
 
 ### Grid System
 
@@ -40,18 +87,18 @@ Create responsive layouts using the 12-column grid system:
 
 ```dart
 BootstrapRow(
-    children: [
-        BootstrapColumn(
-            xs: 12, // Full width on extra small screens
-            md: 6, // Half width on medium screens
-            child: YourWidget(),
-            ),
-            BootstrapColumn(
-                xs: 12,
-                md: 6,
-            child: AnotherWidget(),
-        ),
-    ],s
+  children: [
+    BootstrapColumn(
+      xs: 12, // Full width on extra small screens
+      md: 6,  // Half width on medium screens
+      child: YourWidget(),
+    ),
+    BootstrapColumn(
+      xs: 12,
+      md: 6,
+      child: AnotherWidget(),
+    ),
+  ],
 )
 ```
 
@@ -67,30 +114,46 @@ BootstrapButton(
   },
 )
 ```
+
 ### Form Components
 
 ```dart
 // Text Input
 BootstrapInput(
+  name: 'username',
   label: 'Username',
   placeholder: 'Enter username',
   helperText: 'Your unique username',
   size: BootstrapInputSize.md,
-  onChanged: (value) {
-    // Handle text change
+  formController: formController,
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Username is required';
+    }
+    return null;
   },
 )
 
 // Select/Dropdown
 BootstrapSelect(
+  name: 'country',
   label: 'Country',
+  formController: formController,
   options: [
     BootstrapSelectOption(value: 'us', label: 'United States'),
     BootstrapSelectOption(value: 'uk', label: 'United Kingdom'),
   ],
-  onChanged: (value) {
-    // Handle selection
-  },
+)
+
+// Radio Buttons
+BootstrapRadio(
+  name: 'gender',
+  label: 'Gender',
+  formController: formController,
+  options: [
+    BootstrapRadioOption(value: 'male', label: 'Male'),
+    BootstrapRadioOption(value: 'female', label: 'Female'),
+  ],
 )
 ```
 
@@ -173,6 +236,7 @@ BootstrapModal.show(
   ],
 );
 ```
+
 ## Breakpoints
 
 The package uses Bootstrap's standard breakpoints:
@@ -183,10 +247,31 @@ The package uses Bootstrap's standard breakpoints:
 - xl: 1200px
 - xxl: 1400px
 
+## Form Validation Utilities
+
+Built-in validators:
+```dart
+// Email validation
+FormValidator.email
+
+// Required field
+FormValidator.required
+
+// Min length
+FormValidator.minLength(6)
+
+// Custom validation
+(value) {
+  if (condition) {
+    return 'Error message';
+  }
+  return null;
+}
+```
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please feel free to submit a Pull Request to the [GitHub repository](https://github.com/manassehrandriamitsiry/flutter_bootstrap).
 
 ## License
 

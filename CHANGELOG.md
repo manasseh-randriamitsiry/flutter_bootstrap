@@ -1,27 +1,28 @@
-## 0.0.1
+# Changelog
 
-Initial release of the Flutter Bootstrap package with the following components:
+## [0.1.1] - 2024-03-XX
 
-### Components
-* Button - Bootstrap-style buttons with various variants and sizes
-* Grid System - Responsive row and column layout system
-* Form Components
-  * Input fields with different sizes and states
-  * Select/Dropdown component
-* Cards - Flexible content containers
-* Alerts - Contextual feedback messages
-* Navigation - Responsive navigation bar
-* Modal - Dialog windows for lightbox content
+### Changed
+- Enhanced form validation with dual validation support through `formKey` and `formController`
+- Updated `BootstrapForm` to require both `formKey` and `formController` parameters
+- Improved form validation error handling and state management
 
-### Features
-* Responsive breakpoints (xs, sm, md, lg, xl, xxl)
-* Bootstrap-like theme colors
-* Customizable components
-* Easy-to-use API
-* Fully responsive design
+### Fixed
+- Fixed form validation state tracking
+- Resolved form validation test issues
 
-### Breaking Changes
-* None (Initial Release)
+## [0.1.0] - 2024-03-XX
 
-### Bug Fixes
-* None (Initial Release)
+### Added
+- Initial release with Bootstrap-style components:
+  - Responsive Grid System
+  - Buttons with variants
+  - Form Components (Input, Select, Radio, Checkbox)
+  - Cards
+  - Alerts
+  - Navigation Bar
+  - Modal Dialogs
+- Bootstrap 5 color scheme support
+- Responsive breakpoints system
+- Form validation utilities
+- Basic component tests
