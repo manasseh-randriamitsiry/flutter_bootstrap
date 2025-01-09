@@ -11,12 +11,16 @@ manassehrandriamitsiry@gmail.com 🇲🇬
 
 - 🎨 Bootstrap-style buttons with various variants and sizes
 - 📱 Responsive grid system (12-column layout)
-- 📝 Form components (Input, Select)
+- 📝 Form components with validation
+  - Input fields with different sizes and states
+  - Select/Dropdown component
+  - Checkbox and Radio buttons
+  - Form validation
 - 🎴 Cards with header and footer
 - 🚨 Alert components with different styles
 - 🧭 Navigation bar
 - 🪟 Modal dialogs
-- 📐 Responsive breakpoints system
+- 📐 Responsive breakpoints system (xs, sm, md, lg, xl, xxl)
 - 🎯 Bootstrap 5 color scheme
 
 ## Installation

@@ -21,46 +21,27 @@ class BootstrapNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: backgroundColor ?? BootstrapTheme.dark,
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Row(
-        children: [
-          if (leading != null) ...[
-            leading!,
-            const SizedBox(width: 16),
-          ],
-          Text(
-            title,
-            style: TextStyle(
-              color: textColor ?? Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(width: 24),
-          ...items.map((item) => _buildNavItem(item)).toList(),
-          if (actions != null) ...[
-            const Spacer(),
-            ...actions!,
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavItem(BootstrapNavItem item) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: TextButton(
-        onPressed: item.onTap,
-        child: Text(
-          item.label,
-          style: TextStyle(
-            color: textColor ?? Colors.white,
-          ),
+    return AppBar(
+      leading: leading,
+      backgroundColor: backgroundColor ?? BootstrapTheme.light,
+      title: Text(
+        title,
+        style: TextStyle(
+          color: textColor ?? BootstrapTheme.dark,
         ),
       ),
+      actions: [
+        ...items.map((item) => TextButton(
+          onPressed: item.onTap,
+          child: Text(
+            item.label,
+            style: TextStyle(
+              color: textColor ?? BootstrapTheme.dark,
+            ),
+          ),
+        )),
+        if (actions != null) ...actions!,
+      ],
     );
   }
 }
@@ -68,11 +49,11 @@ class BootstrapNavbar extends StatelessWidget {
 class BootstrapNavItem {
   final String label;
   final VoidCallback onTap;
-  final bool isActive;
+  final bool active;
 
   const BootstrapNavItem({
     required this.label,
     required this.onTap,
-    this.isActive = false,
+    this.active = false,
   });
 } 

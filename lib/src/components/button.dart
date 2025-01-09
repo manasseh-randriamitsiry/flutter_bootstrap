@@ -49,19 +49,23 @@ class BootstrapButton extends StatelessWidget {
   }
 
   ButtonStyle _getButtonStyle() {
+    final baseColor = backgroundColor ?? _getVariantColor();
+    final textColor = foregroundColor ?? _getTextColor();
+    
     return ElevatedButton.styleFrom(
-      backgroundColor: _getBackgroundColor(),
-      foregroundColor: _getForegroundColor(),
+      backgroundColor: disabled ? Colors.grey.shade300 : baseColor,
+      foregroundColor: disabled ? Colors.grey.shade600 : textColor,
       padding: _getPadding(),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4),
+        side: variant == BootstrapButtonVariant.outline
+            ? BorderSide(color: baseColor)
+            : BorderSide.none,
       ),
     );
   }
 
-  Color _getBackgroundColor() {
-    if (backgroundColor != null) return backgroundColor!;
-    
+  Color _getVariantColor() {
     switch (variant) {
       case BootstrapButtonVariant.primary:
         return BootstrapTheme.primary;
@@ -84,12 +88,12 @@ class BootstrapButton extends StatelessWidget {
     }
   }
 
-  Color _getForegroundColor() {
-    if (foregroundColor != null) return foregroundColor!;
-    
+  Color _getTextColor() {
+    if (variant == BootstrapButtonVariant.outline) {
+      return _getVariantColor();
+    }
     switch (variant) {
       case BootstrapButtonVariant.light:
-      case BootstrapButtonVariant.outline:
         return BootstrapTheme.dark;
       default:
         return Colors.white;

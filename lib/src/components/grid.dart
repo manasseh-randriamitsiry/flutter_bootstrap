@@ -52,36 +52,26 @@ class BootstrapColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return child;
-  }
-
-  Widget buildWithWidth(double screenWidth) {
-    final size = screenWidth.screenSize;
-    final columns = _getColumnsForSize(size);
-    
-    return Flexible(
-      flex: columns,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: child,
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return buildWithWidth(constraints.maxWidth);
+      },
     );
   }
 
-  int _getColumnsForSize(BootstrapScreenSize size) {
-    switch (size) {
-      case BootstrapScreenSize.xxl:
-        return xxl ?? xl ?? lg ?? md ?? sm ?? xs;
-      case BootstrapScreenSize.xl:
-        return xl ?? lg ?? md ?? sm ?? xs;
-      case BootstrapScreenSize.lg:
-        return lg ?? md ?? sm ?? xs;
-      case BootstrapScreenSize.md:
-        return md ?? sm ?? xs;
-      case BootstrapScreenSize.sm:
-        return sm ?? xs;
-      case BootstrapScreenSize.xs:
-        return xs;
-    }
+  Widget buildWithWidth(double screenWidth) {
+    return Flexible(
+      flex: _getColumnWidth(screenWidth),
+      child: child,
+    );
+  }
+
+  int _getColumnWidth(double screenWidth) {
+    if (screenWidth >= Breakpoints.xxl && xxl != null) return xxl!;
+    if (screenWidth >= Breakpoints.xl && xl != null) return xl!;
+    if (screenWidth >= Breakpoints.lg && lg != null) return lg!;
+    if (screenWidth >= Breakpoints.md && md != null) return md!;
+    if (screenWidth >= Breakpoints.sm && sm != null) return sm!;
+    return xs;
   }
 } 

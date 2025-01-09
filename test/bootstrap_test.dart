@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bootstrap_flutter/bootstrap.dart';
+import 'package:bootstrap_flutter/src/components/form/form_controller.dart';
+import 'package:bootstrap_flutter/src/utilities/form_validator.dart';
 
 void main() {
   group('BootstrapButton Tests', () {
-    testWidgets('renders button with default props', (WidgetTester tester) async {
+    testWidgets('renders button with text', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: BootstrapButton(
@@ -15,58 +17,37 @@ void main() {
       );
 
       expect(find.text('Test Button'), findsOneWidget);
-      expect(find.byType(ElevatedButton), findsOneWidget);
     });
 
-    testWidgets('disabled button is not clickable', (WidgetTester tester) async {
-      bool wasPressed = false;
+    testWidgets('handles button press', (WidgetTester tester) async {
+      bool pressed = false;
       await tester.pumpWidget(
         MaterialApp(
           home: BootstrapButton(
-            text: 'Disabled Button',
-            onPressed: () => wasPressed = true,
-            disabled: true,
+            text: 'Test Button',
+            onPressed: () => pressed = true,
           ),
         ),
       );
 
       await tester.tap(find.byType(ElevatedButton));
-      expect(wasPressed, false);
-    });
-  });
-
-  group('BootstrapAlert Tests', () {
-    testWidgets('renders alert with message', (WidgetTester tester) async {
-      const testMessage = 'Test Alert';
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Material(
-            child: BootstrapAlert(
-              message: testMessage,
-              style: BootstrapAlertStyle.primary,
-            ),
-          ),
-        ),
-      );
-
-      expect(find.text(testMessage), findsOneWidget);
+      expect(pressed, true);
     });
 
-    testWidgets('alert can be dismissed', (WidgetTester tester) async {
-      bool wasDismissed = false;
+    testWidgets('disabled button does not trigger onPressed', (WidgetTester tester) async {
+      bool pressed = false;
       await tester.pumpWidget(
         MaterialApp(
-          home: Material(
-            child: BootstrapAlert(
-              message: 'Dismissible Alert',
-              onDismiss: () => wasDismissed = true,
-            ),
+          home: BootstrapButton(
+            text: 'Test Button',
+            disabled: true,
+            onPressed: () => pressed = true,
           ),
         ),
       );
 
-      await tester.tap(find.byIcon(Icons.close));
-      expect(wasDismissed, true);
+      await tester.tap(find.byType(ElevatedButton));
+      expect(pressed, false);
     });
   });
 
@@ -96,37 +77,121 @@ void main() {
     });
   });
 
-  group('BootstrapInput Tests', () {
-    testWidgets('renders input with label', (WidgetTester tester) async {
-      const testLabel = 'Test Label';
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Material(
-            child: BootstrapInput(
-              label: testLabel,
-              placeholder: 'Enter text',
-            ),
-          ),
-        ),
-      );
-
-      expect(find.text(testLabel), findsOneWidget);
-    });
-
-    testWidgets('input handles text changes', (WidgetTester tester) async {
-      String? changedValue;
+  group('BootstrapForm Tests', () {
+    testWidgets('form validates inputs', (WidgetTester tester) async {
+      final controller = BootstrapFormController();
+      final formKey = GlobalKey<FormState>();
+      
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: BootstrapInput(
-              onChanged: (value) => changedValue = value,
+            child: BootstrapForm(
+              formController: controller,
+              formKey: formKey,
+              children: [
+                BootstrapInput(
+                  name: 'email',
+                  label: 'Email',
+                  validator: FormValidator.email,
+                  formController: controller,
+                ),
+              ],
             ),
           ),
         ),
       );
 
-      await tester.enterText(find.byType(TextField), 'test input');
-      expect(changedValue, 'test input');
+      await tester.enterText(find.byType(TextFormField), 'invalid-email');
+      await tester.pump();
+
+      expect(controller.getError('email'), isNotNull);
+      expect(formKey.currentState!.validate(), false);
+    });
+  });
+
+  group('BootstrapAlert Tests', () {
+    testWidgets('renders alert with message', (WidgetTester tester) async {
+      const testMessage = 'Test Alert';
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: BootstrapAlert(
+            message: testMessage,
+            style: BootstrapAlertStyle.success,
+          ),
+        ),
+      );
+
+      expect(find.text(testMessage), findsOneWidget);
+    });
+
+    testWidgets('handles dismiss', (WidgetTester tester) async {
+      bool dismissed = false;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: BootstrapAlert(
+            message: 'Test Alert',
+            onDismiss: () => dismissed = true,
+          ),
+        ),
+      );
+
+      await tester.tap(find.byType(IconButton));
+      expect(dismissed, true);
+    });
+  });
+
+  group('BootstrapModal Tests', () {
+    testWidgets('renders modal with title and body', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) => BootstrapButton(
+              text: 'Open Modal',
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => BootstrapModal(
+                    title: 'Test Modal',
+                    body: const Text('Modal Content'),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Open Modal'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Test Modal'), findsOneWidget);
+      expect(find.text('Modal Content'), findsOneWidget);
+    });
+  });
+
+  group('BootstrapNavbar Tests', () {
+    testWidgets('renders navbar with title and items', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: BootstrapNavbar(
+            title: 'Test Nav',
+            items: [
+              BootstrapNavItem(
+                label: 'Home',
+                onTap: () {},
+              ),
+              BootstrapNavItem(
+                label: 'About',
+                onTap: () {},
+              ),
+            ],
+          ),
+        ),
+      );
+
+      expect(find.text('Test Nav'), findsOneWidget);
+      expect(find.text('Home'), findsOneWidget);
+      expect(find.text('About'), findsOneWidget);
     });
   });
 
@@ -145,61 +210,6 @@ void main() {
       expect(find.text('Header'), findsOneWidget);
       expect(find.text('Body'), findsOneWidget);
       expect(find.text('Footer'), findsOneWidget);
-    });
-  });
-
-  group('BootstrapNavbar Tests', () {
-    testWidgets('renders navbar with items', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: BootstrapNavbar(
-            title: 'Test Nav',
-            items: [
-              BootstrapNavItem(
-                label: 'Item 1',
-                onTap: () {},
-              ),
-              BootstrapNavItem(
-                label: 'Item 2',
-                onTap: () {},
-              ),
-            ],
-          ),
-        ),
-      );
-
-      expect(find.text('Test Nav'), findsOneWidget);
-      expect(find.text('Item 1'), findsOneWidget);
-      expect(find.text('Item 2'), findsOneWidget);
-    });
-  });
-
-  group('BootstrapModal Tests', () {
-    testWidgets('shows modal dialog', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Builder(
-            builder: (BuildContext context) {
-              return ElevatedButton(
-                onPressed: () {
-                  BootstrapModal.show(
-                    context: context,
-                    title: 'Test Modal',
-                    body: const Text('Modal Content'),
-                  );
-                },
-                child: const Text('Show Modal'),
-              );
-            },
-          ),
-        ),
-      );
-
-      await tester.tap(find.text('Show Modal'));
-      await tester.pumpAndSettle();
-
-      expect(find.text('Test Modal'), findsOneWidget);
-      expect(find.text('Modal Content'), findsOneWidget);
     });
   });
 }

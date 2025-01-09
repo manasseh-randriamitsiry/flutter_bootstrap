@@ -8,6 +8,7 @@ class BootstrapCard extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final BorderRadius? borderRadius;
   final Color? backgroundColor;
+  final Color? borderColor;
 
   const BootstrapCard({
     super.key,
@@ -18,17 +19,20 @@ class BootstrapCard extends StatelessWidget {
     this.padding = const EdgeInsets.all(16.0),
     this.borderRadius,
     this.backgroundColor,
+    this.borderColor,
   });
 
   @override
   Widget build(BuildContext context) {
+    final border = borderColor ?? Colors.grey.shade300;
+    
     return Container(
       width: width,
       decoration: BoxDecoration(
         color: backgroundColor ?? Theme.of(context).cardColor,
         borderRadius: borderRadius ?? BorderRadius.circular(4),
         border: Border.all(
-          color: Colors.grey.shade300,
+          color: border,
           width: 1,
         ),
       ),
@@ -42,7 +46,7 @@ class BootstrapCard extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Colors.grey.shade300,
+                    color: border,
                     width: 1,
                   ),
                 ),
@@ -59,7 +63,7 @@ class BootstrapCard extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(
-                    color: Colors.grey.shade300,
+                    color: border,
                     width: 1,
                   ),
                 ),

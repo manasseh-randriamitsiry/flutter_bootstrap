@@ -33,21 +33,22 @@ class BootstrapAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: _getBackgroundColor(),
-        borderRadius: BorderRadius.circular(4),
         border: Border.all(
           color: _getBorderColor(),
           width: 1,
         ),
+        borderRadius: BorderRadius.circular(4),
       ),
       child: Row(
         children: [
-          if (icon != null) ...[
-            icon!,
-            const SizedBox(width: 12),
-          ],
+          if (icon != null) 
+            Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: icon!,
+            ),
           Expanded(
             child: Text(
               message,
@@ -67,42 +68,9 @@ class BootstrapAlert extends StatelessWidget {
     );
   }
 
-  Color _getBackgroundColor() {
+  Color _getBaseColor() {
     if (backgroundColor != null) return backgroundColor!;
     
-    switch (style) {
-      case BootstrapAlertStyle.primary:
-        return BootstrapTheme.primary.withOpacity(0.1);
-      case BootstrapAlertStyle.secondary:
-        return BootstrapTheme.secondary.withOpacity(0.1);
-      case BootstrapAlertStyle.success:
-        return BootstrapTheme.success.withOpacity(0.1);
-      case BootstrapAlertStyle.danger:
-        return BootstrapTheme.danger.withOpacity(0.1);
-      case BootstrapAlertStyle.warning:
-        return BootstrapTheme.warning.withOpacity(0.1);
-      case BootstrapAlertStyle.info:
-        return BootstrapTheme.info.withOpacity(0.1);
-    }
-  }
-
-  Color _getBorderColor() {
-    if (borderColor != null) return borderColor!;
-    return _getBaseColor();
-  }
-
-  Color _getTextColor() {
-    if (textColor != null) return textColor!;
-    
-    switch (style) {
-      case BootstrapAlertStyle.warning:
-        return Colors.black87;
-      default:
-        return _getBaseColor();
-    }
-  }
-
-  Color _getBaseColor() {
     switch (style) {
       case BootstrapAlertStyle.primary:
         return BootstrapTheme.primary;
@@ -117,5 +85,23 @@ class BootstrapAlert extends StatelessWidget {
       case BootstrapAlertStyle.info:
         return BootstrapTheme.info;
     }
+  }
+
+  Color _getBackgroundColor() {
+    final baseColor = _getBaseColor();
+    return Color.fromRGBO(
+      baseColor.red,
+      baseColor.green,
+      baseColor.blue,
+      0.1,
+    );
+  }
+
+  Color _getBorderColor() {
+    return borderColor ?? _getBaseColor();
+  }
+
+  Color _getTextColor() {
+    return textColor ?? _getBaseColor();
   }
 } 
