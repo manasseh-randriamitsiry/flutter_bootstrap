@@ -61,7 +61,7 @@ BootstrapButton(
     // Handle button press
   },
 )
-
+```
 ### Form Components
 
 ```dart
@@ -116,6 +116,7 @@ BootstrapAlert(
     // Handle alert dismissal
   },
 )
+```
 
 ### Navigation Bar
 
@@ -140,6 +141,7 @@ BootstrapNavbar(
     ),
   ],
 )
+```
 
 ### Modal Dialogs
 
@@ -164,7 +166,7 @@ BootstrapModal.show(
     ),
   ],
 );
-
+```
 ## Breakpoints
 
 The package uses Bootstrap's standard breakpoints:
